@@ -1,0 +1,79 @@
+---
+title: "Exemplos de Diagrama de Lexis no R"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+if (!require("pacman")){ install.packages("pacman") }
+pacman::p_load(LexisPlotR, magrittr)
+```
+
+```{r cars}
+# Plot a Lexis grid from year 1900 to year 1905, representing the ages from 0 to 5
+lexis_grid(year_start = 1900, year_end = 1905, age_start = 0,
+           age_end = 5)
+
+```
+
+```{r}
+lexis_grid(year_start = 1900, year_end = 1905, age_start = 0, age_end = 8)
+```
+
+```{r}
+lexis_grid(year_start = 1900, year_end = 1950, age_start = 0, age_end = 50, delta = 5)
+```
+
+```{r}
+lexis <- lexis_grid(year_start = 1900, year_end = 1905, age_start = 0, age_end = 5)
+lexis_age(lg = lexis, age = 2)
+```
+
+```{r}
+lexis <- lexis_grid(year_start = 1900, year_end = 1905, age_start = 0, age_end = 5)
+lexis_year(lg = lexis, year = 1903)
+```
+
+```{r}
+lexis <- lexis_grid(year_start = 1900, year_end = 1905, age_start = 0, age_end = 5)
+lexis_cohort(lg = lexis, cohort = 1898)
+```
+
+```{r}
+lexis <- lexis_grid(year_start = 1900, year_end = 1905, age_start = 0, age_end = 5)
+
+polygons <- data.frame(group = c(1, 1, 1, 2, 2, 2),
+                       x = c("1901-01-01", "1902-01-01", "1902-01-01", "1903-01-01", "1904-01-01", "1904-01-01"),
+                       y = c(1, 1, 2, 1, 1, 2))
+
+lexis_polygon(lg = lexis, x = polygons$x, y = polygons$y, group = polygons$group)
+```
+
+```{r}
+lg <- lexis_grid(year_start = 1900, year_end = 1905, age_start = 0, age_end = 5)
+lexis_lifeline(lg = lg, birth = "1901-09-23", lwd = 1.5)
+```
+
+```{r}
+lexis_lifeline(lg = lg, birth = "1901-09-23", entry = "1902-04-01", exit = "1904-10-31", lwd = 1.5)
+
+```
+
+```{r}
+data("lifelines_sample")
+lifelines_sample <- lifelines_sample[1:30,]
+head(lifelines_sample, 10)
+
+lg <- lexis_grid(year_start = 1900, year_end = 1905, age_start = 0, age_end = 5)
+lexis_lifeline(lg = lg, birth = lifelines_sample$entry, exit = lifelines_sample$exit, lwd = 1.5, lineends = TRUE)
+```
+
+```{r}
+lexis_grid(year_start = 1990, year_end = 2000, age_start = 0, age_end = 10) %>%
+  lexis_age(age = 3) %>%
+  lexis_cohort(cohort = 1988) %>%
+  lexis_year(year = 1998) %>%
+  lexis_lifeline(birth = "1991-09-23", lwd = 1.5)
+
+```
+
